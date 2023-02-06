@@ -3,14 +3,20 @@ export interface IAnimalResponse {
     skip: 0;
     total: number;
     animals: IAnimal[];
-  }
+}
 
-export interface IAnimal {
+export interface INewAnimal {
+    name: string | null;
+    type: 'DOG' | 'CAT' | null;
+    breed: string | null;
+    birthDate: string | null;
+    imgUrl: string | null;
+    description: string | null;
+    pedigree: boolean | null;
+}
+
+export interface IAnimal extends INewAnimal{
     _id: string;
-    name: string;
-    type: 'DOG' | 'CAT';
-    breed: string;
-    birthDate: string;
     created_at: string;
     updated_at: string;
 }
