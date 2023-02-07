@@ -5,7 +5,7 @@ export const defaultAnimal: INewAnimal = {
     type: null,
     breed: null,
     birthDate: null,
-    imgUrl: null,
+    imgUrl: undefined,
     description: null,
-    pedigree: null
+    pedigree: false
 }
