@@ -1,31 +1,56 @@
+import axios from 'axios';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { INewAnimal } from '../../../../../model/animal';
 import { defaultAnimal } from '../../../../../utils/animal.utils';
+import { API_URL } from '../../../../../contants';
+import { useState } from 'react';
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const AnimalForm = () => {
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
         watch,
-        setValue,
         formState: { isValid, errors },
     } = useForm({
         mode: 'onChange',
         defaultValues: defaultAnimal,
     });
 
-    const watchImage = watch('imgUrl');
-    const watchType = watch('type');
+    const [animalState, setAnimalState] = useState({
+        saving: false,
+        error: false,
+        success: false
+    })
 
-    useEffect(() => {
-        console.log(watchType);
-    }, [watchType])
+    const onSubmit = async (data: INewAnimal) => {
+        setAnimalState({
+            ...animalState,
+            saving: true
+        });
 
-    const onSubmit = (data: INewAnimal) => {
-        console.log(data);
+        try {
+            const res = await axios.post(`${API_URL}`, data);
+            setAnimalState({
+                ...animalState,
+                saving: false,
+                success: true
+            });
+            const id = res.data._id;
+            navigate(`/animal/${id}`);
+        } catch (e) {
+            setAnimalState({
+                ...animalState,
+                saving: false,
+                error: true
+            });
+        }
     }
+
+    const watchImage = watch('imgUrl');
 
     const now = dayjs().format('YYYY-MM-DD');
 
@@ -111,9 +136,10 @@ export const AnimalForm = () => {
                 <div className='row'>
                     <label htmlFor='description'>Insert description:  </label>
                     <input
-                        id='breed'
+                        id='description'
                         {...register('description', {
                             required: { value: true, message: 'Field Required' },
+                            minLength: { value: 9, message: 'Min 10 char allowed'}
                         })}
                         placeholder='Description'
                     />
@@ -126,7 +152,7 @@ export const AnimalForm = () => {
                             type='checkbox'
                             id='pedigree'
                             {...register('pedigree', {
-                                required: { value: false, message: 'Field Required' }
+                                required: { value: false, message: 'Field not Required' }
                             })}
                         />
                 </div>
@@ -138,6 +164,8 @@ export const AnimalForm = () => {
                 </div><br/>
 
                 <button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button>
+                {animalState.saving && "Saving"}
+                {animalState.error && "Error"}
             </form>
         </div>
     );
