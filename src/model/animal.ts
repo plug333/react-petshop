@@ -10,7 +10,7 @@ export interface INewAnimal {
     type: 'DOG' | 'CAT' | null;
     breed: string | null;
     birthDate: string | null;
-    imgUrl: string | null;
+    imgUrl: string | undefined;
     description: string | null;
     pedigree: boolean | null;
 }
