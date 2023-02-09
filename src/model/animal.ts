@@ -6,13 +6,13 @@ export interface IAnimalResponse {
 }
 
 export interface INewAnimal {
-    name: string | null;
-    type: 'DOG' | 'CAT' | null;
-    breed: string | null;
-    birthDate: string | null;
-    imgUrl: string | undefined;
-    description: string | null;
-    pedigree: boolean | null;
+    name: string;
+    type: 'DOG' | 'CAT' | "";
+    breed: string;
+    birthDate: string;
+    imgUrl: string;
+    description: string;
+    pedigree: boolean;
 }
 
 export interface IAnimal extends INewAnimal{
