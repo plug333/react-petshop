@@ -47,7 +47,7 @@ export const Homepage = () => {
 
     return (
         <div className='animals'>
-            <h1>Animals</h1>
+            <h1 className='animals-title'>Animals</h1>
             <div className='animals-list'>
                 {animalState.loading && 'Loading...'}
                 {animalState.error && 'Error'}
