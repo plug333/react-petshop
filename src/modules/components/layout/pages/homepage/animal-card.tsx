@@ -1,5 +1,6 @@
 import { IAnimal } from "../../../../../model/animal";
 import { useNavigate } from "react-router-dom";
+import { DeleteButton } from "../../../button/delete-button";
 
 type Props = {
     animal: IAnimal;
@@ -26,6 +27,7 @@ export const AnimalCard = (props: Props) => {
                 <h2>Age: </h2><p>{calcAge()}</p>
                 <h2>{"Pedigree: " + animal.pedigree}</h2>
                 <button onClick={() => navigate(`/animal/${animal._id}`)}>Details</button>
+                <DeleteButton />
             </div>
         </div>
     )
