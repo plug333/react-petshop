@@ -1,7 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
-import { INewAnimal } from '../../../../../model/animal';
 import { defaultAnimal } from '../../../../../utils/animal.utils';
 import { API_URL } from '../../../../../contants';
 import { useState, useEffect } from 'react';
@@ -29,6 +28,7 @@ export const AnimalForm = () => {
     const {
         register,
         handleSubmit,
+        reset,
         watch,
         formState: { isValid, errors },
     } = useForm({
@@ -50,6 +50,7 @@ export const AnimalForm = () => {
                 animal: data,
                 loading: false
             });
+            reset(data);
         } catch (e) {
             setAnimalState({
                 ...animalState,
@@ -63,14 +64,14 @@ export const AnimalForm = () => {
         fetchAnimal();
     }, []);
 
-    const onSubmit = async (data: INewAnimal) => {
+    const onSubmit = async (data: IAnimal) => {
         setAnimalState({
             ...animalState,
             loading: true
         });
 
         try {
-            const res = defaultAnimal ? await axios.post(`${API_URL}/animal`, data) : await axios.put(`${API_URL}/animal/${_id}`, data);
+            const res = !data._id ? await axios.post(`${API_URL}/animal`, data) : await axios.put(`${API_URL}/animal/${_id}`, data);
             setAnimalState({
                 ...animalState,
                 loading: false,
@@ -106,7 +107,7 @@ export const AnimalForm = () => {
                         value={animalState.animal?.name}
                     />
                     {errors.name && errors.name.message}
-                </div><br/>
+                </div>
 
                 <div className='row'>
                     <label htmlFor='type'>Insert type:  </label>
@@ -131,7 +132,7 @@ export const AnimalForm = () => {
                     />
                     <label htmlFor='CAT'>CAT</label>
                     {errors.type && errors.type.message}
-                </div><br/>
+                </div>
 
                 <div className='row'>
                     <label htmlFor='breed'>Insert breed:  </label>
@@ -144,7 +145,7 @@ export const AnimalForm = () => {
                         value={animalState.animal?.breed}
                     />
                     {errors.breed && errors.breed.message}
-                </div><br/>
+                </div>
 
                 <div className='row'>
                 <label htmlFor='birthDate'>Insert birthdate:  </label>
@@ -158,7 +159,7 @@ export const AnimalForm = () => {
                         value={animalState.animal?.birthDate}
                     />
                     {errors.birthDate && errors.birthDate.message}
-                </div><br/>
+                </div>
 
                 <div className='row'>
                 <label htmlFor='imgUrl'>Insert image:  </label>
@@ -171,7 +172,7 @@ export const AnimalForm = () => {
                         value={animalState.animal?.imgUrl}
                     />
                     {errors.imgUrl && errors.imgUrl.message}
-                </div><br/>
+                </div>
 
                 <div className='row'>
                     <label htmlFor='description'>Insert description:  </label>
@@ -185,7 +186,7 @@ export const AnimalForm = () => {
                         value={animalState.animal?.description}
                     />
                     {errors.description && errors.description.message}
-                </div><br/>
+                </div>
 
                 <div className='row'>
                     <label htmlFor='pedigree'>Pedigree? </label>
@@ -202,7 +203,7 @@ export const AnimalForm = () => {
                     {watchImage && (
                         <img className='preview-image' src={watchImage} />
                     )}
-                </div><br/>
+                </div>
 
                 {!animalState.loading && <><button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button></>}
                 {animalState.error && "Error"}
