@@ -5,7 +5,8 @@ export interface IAnimalResponse {
     animals: IAnimal[];
 }
 
-export interface INewAnimal {
+export interface IAnimal {
+    _id?: string;
     name: string;
     type: 'DOG' | 'CAT' | "";
     breed: string;
@@ -13,10 +14,6 @@ export interface INewAnimal {
     imgUrl: string;
     description: string;
     pedigree: boolean;
-}
-
-export interface IAnimal extends INewAnimal{
-    _id: string;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
