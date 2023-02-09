@@ -85,18 +85,20 @@ export const AnimalDetail = () => {
             {animalState.loading && 'Loading...'}
             {animalState.error && 'Error'}
             {animalDeleteState.deleting && 'Deleting...'}
-            {animalState.animal && <><img src={animalState.animal?.imgUrl} alt='animal photo' />
-            <h2>{"ID: " + animalState.animal?._id}</h2>
-            <h2>{"Name: " + animalState.animal?.name}</h2>
-            <h2>{"Type: " + animalState.animal?.type}</h2>
-            <h2>{"Breed: " + animalState.animal?.breed}</h2>
-            <h2>{"Birth Date: " + animalState.animal?.birthDate}</h2>
-            <h2>{"Description: " + animalState.animal?.description}</h2>
-            <h2>{"Pedigree: " + animalState.animal?.pedigree}</h2>
-            <h2>{"Created At: " + animalState.animal?.created_at}</h2>
-            <h2>{"Updated At: " + animalState.animal?.updated_at}</h2>
+            {animalState.animal && <>
+            <h2>{animalState.animal?._id}</h2>
+            <img src={animalState.animal?.imgUrl} alt='animal photo' />
+            <h2>Name:</h2><p>{animalState.animal?.name}</p>
+            <h2>Type:</h2><p>{animalState.animal?.type}</p>
+            <h2>Breed:</h2><p>{animalState.animal?.breed}</p>
+            <h2>Birth Date:</h2><p>{animalState.animal?.birthDate}</p>
+            <h2>Description:</h2><p>{animalState.animal?.description}</p>
+            <h2>Pedigree:</h2><p>{animalState.animal?.pedigree}</p>
+            <h2>Created At:</h2><p>{animalState.animal?.created_at}</p>
+            <h2>Updated At:</h2><p>{animalState.animal?.updated_at}</p>
             <button disabled={animalState.loading && animalDeleteState.deleting} onClick={() => navigate(`/animal/${animalState.animal?._id}/edit`)}>Edit</button>
-            <button disabled={animalState.loading && animalDeleteState.deleting} onClick={() => deleteAnimal()}>Delete</button></>}
+            <button disabled={animalState.loading && animalDeleteState.deleting} onClick={() => deleteAnimal()}>Delete</button>
+            </>}
         </div>
     );
 }
