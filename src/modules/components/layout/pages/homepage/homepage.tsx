@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_URL } from '../../../../../contants';
-import { IAnimal, IAnimalResponse } from '../../../../../model/animal';
+import { IAnimal } from '../../../../../model/animal';
 import { AnimalCard } from './animal-card';
 
 type TAnimalState = {
@@ -24,7 +24,7 @@ export const Homepage = () => {
         });
 
         try {
-            const res = await axios.get(`${API_URL}`);
+            const res = await axios.get(`${API_URL}/animal`);
             const data: IAnimal[] = res.data;
             console.log(data)
             setAnimalState({
@@ -49,7 +49,7 @@ export const Homepage = () => {
         <div className='animals'>
             <h1>Animals</h1>
             <div className='animals-list'>
-                {animalState.loading && 'Loading'}
+                {animalState.loading && 'Loading...'}
                 {animalState.error && 'Error'}
                 {animalState.animals?.length === 0 && 'Animals not found'}
                 {animalState.animals?.map(animal => (
