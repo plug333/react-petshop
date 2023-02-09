@@ -4,11 +4,27 @@ import { useForm } from 'react-hook-form';
 import { INewAnimal } from '../../../../../model/animal';
 import { defaultAnimal } from '../../../../../utils/animal.utils';
 import { API_URL } from '../../../../../contants';
-import { useState } from 'react';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import { IAnimal } from '../../../../../model/animal';
+
+type TAnimalState = {
+    error: boolean;
+    loading: boolean;
+    animal: IAnimal | null;
+}
 
 export const AnimalForm = () => {
     const navigate = useNavigate();
+
+    const params = useParams();
+    const _id = params._id;
+
+    const [animalState, setAnimalState] = useState<TAnimalState>({
+        error: false,
+        loading: false,
+        animal: null
+    });
 
     const {
         register,
@@ -20,31 +36,51 @@ export const AnimalForm = () => {
         defaultValues: defaultAnimal,
     });
 
-    const [animalState, setAnimalState] = useState({
-        saving: false,
-        error: false,
-        success: false
-    })
+    const fetchAnimal = async () => {
+        setAnimalState({
+            ...animalState,
+            loading: true,
+        });
+
+        try {
+            const res = await axios.get(`${API_URL}/animal/${_id}`);
+            const data: IAnimal = res.data;
+            setAnimalState({
+                ...animalState,
+                animal: data,
+                loading: false
+            });
+        } catch (e) {
+            setAnimalState({
+                ...animalState,
+                loading: false,
+                error: true,
+            });
+        }
+    }
+
+    useEffect(() => {
+        fetchAnimal();
+    }, []);
 
     const onSubmit = async (data: INewAnimal) => {
         setAnimalState({
             ...animalState,
-            saving: true
+            loading: true
         });
 
         try {
-            const res = await axios.post(`${API_URL}`, data);
+            const res = defaultAnimal ? await axios.post(`${API_URL}/animal`, data) : await axios.put(`${API_URL}/animal/${_id}`, data);
             setAnimalState({
                 ...animalState,
-                saving: false,
-                success: true
+                loading: false,
             });
             const id = res.data._id;
             navigate(`/animal/${id}`);
         } catch (e) {
             setAnimalState({
                 ...animalState,
-                saving: false,
+                loading: false,
                 error: true
             });
         }
@@ -67,6 +103,7 @@ export const AnimalForm = () => {
                             required: { value: true, message: 'Field Required' },
                         })}
                         placeholder='Name'
+                        value={animalState.animal?.name}
                     />
                     {errors.name && errors.name.message}
                 </div><br/>
@@ -104,6 +141,7 @@ export const AnimalForm = () => {
                             required: { value: true, message: 'Field Required' },
                         })}
                         placeholder='Breed'
+                        value={animalState.animal?.breed}
                     />
                     {errors.breed && errors.breed.message}
                 </div><br/>
@@ -117,6 +155,7 @@ export const AnimalForm = () => {
                         {...register('birthDate', {
                             required: { value: true, message: 'Field Required' },
                         })}
+                        value={animalState.animal?.birthDate}
                     />
                     {errors.birthDate && errors.birthDate.message}
                 </div><br/>
@@ -129,6 +168,7 @@ export const AnimalForm = () => {
                             required: { value: true, message: 'Field Required' },
                         })}
                         placeholder='Image'
+                        value={animalState.animal?.imgUrl}
                     />
                     {errors.imgUrl && errors.imgUrl.message}
                 </div><br/>
@@ -142,6 +182,7 @@ export const AnimalForm = () => {
                             minLength: { value: 9, message: 'Min 10 char allowed'}
                         })}
                         placeholder='Description'
+                        value={animalState.animal?.description}
                     />
                     {errors.description && errors.description.message}
                 </div><br/>
@@ -163,8 +204,7 @@ export const AnimalForm = () => {
                     )}
                 </div><br/>
 
-                <button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button>
-                {animalState.saving && "Saving"}
+                {!animalState.loading && <><button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button></>}
                 {animalState.error && "Error"}
             </form>
         </div>
