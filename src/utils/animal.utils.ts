@@ -1,6 +1,6 @@
-import { INewAnimal } from "../model/animal";
+import { IAnimal } from "../model/animal";
 
-export const defaultAnimal: INewAnimal = {
+export const defaultAnimal: IAnimal = {
     name: "",
     type: "",
     breed: "",
