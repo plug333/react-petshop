@@ -3,7 +3,12 @@
 }
 
 .row {
-    padding: 15px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    border: solid;
+    border-color: black;
+    margin-bottom: 1rem;
 
     .preview-image {
         max-width: 300px;
