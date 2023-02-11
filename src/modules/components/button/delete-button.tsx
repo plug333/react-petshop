@@ -12,41 +12,50 @@ export const DeleteButton = () => {
     
     const [animalDeleteState, setAnimalDeleteState] = useState<TAnimalDeleteState>({
         deleting: false,
-        error: false
+        error: false,
+        confirmButton: false
     });
     
-    const deleteAnimal = async () => {
-        const confirm = prompt('Are you sure you want to delete this animal? Type "yes" if you want to delete it');
-
-        if (confirm === 'yes') {
+    const deleteAnimal = async () => {     
+        try {
+            await axios.delete(`${API_URL}/animal/${id}`);
             setAnimalDeleteState({
                 ...animalDeleteState,
                 deleting: true,
             });
-
-            try {
-                await axios.delete(`${API_URL}/animal/${id}`);
-                setAnimalDeleteState({
-                    ...animalDeleteState,
-                    deleting: true,
-                });
-                alert('Pet successfully deleted!');
-                navigate('/');
-            } catch (e) {
-                setAnimalDeleteState({
-                    deleting: false,
-                    error: true
-                });
-            }
-        } else {
-            alert('Pet deletion successfully deleted!');
+            alert('Pet successfully deleted!');
             navigate('/');
+        } catch (e) {
+            setAnimalDeleteState({
+                ...animalDeleteState,
+                deleting: false,
+                error: true
+            });
         }
     }
     return (
         <div>
             {animalDeleteState.deleting && 'Deleting...'}
-            <button disabled={animalDeleteState.deleting} onClick={() => deleteAnimal()}>Delete</button>
+            {!animalDeleteState.confirmButton && <>
+                <button disabled={animalDeleteState.deleting} onClick={() => {
+                    setAnimalDeleteState({
+                        ...animalDeleteState,
+                        confirmButton: true
+                    });
+                }}>Delete</button>
+            </>}
+            {animalDeleteState.confirmButton && <>
+                <p>Are you sure you want to delete this animal?</p>
+                <button onClick={() => deleteAnimal()}>Confirm</button>
+                <button onClick={() => {
+                    navigate('/');
+                    setAnimalDeleteState({
+                        ...animalDeleteState,
+                        confirmButton: false
+                    });
+                    alert('Pet has not been deleted!');
+                }}>Cancel</button>
+            </>}
         </div>
     );
 }
