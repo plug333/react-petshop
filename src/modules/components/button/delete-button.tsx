@@ -2,11 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../contants";
 import { useNavigate, useParams } from "react-router-dom";
-
-type TAnimalDeleteState = {
-    deleting: boolean;
-    error: boolean;
-}
+import { TAnimalDeleteState } from "../../../model/animal-state";
 
 export const DeleteButton = () => {
     const navigate = useNavigate();

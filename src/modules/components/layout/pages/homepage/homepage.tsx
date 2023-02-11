@@ -2,16 +2,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_URL } from '../../../../../contants';
 import { IAnimal } from '../../../../../model/animal';
+import { TAnimalsState } from '../../../../../model/animal-state';
 import { AnimalCard } from './animal-card';
 
-type TAnimalState = {
-    loading: boolean;
-    error: boolean;
-    animals: IAnimal[] | null;
-}
-
 export const Homepage = () => {
-    const [animalState, setAnimalState] = useState<TAnimalState>({
+    const [animalState, setAnimalState] = useState<TAnimalsState>({
         loading: false,
         error: false,
         animals: null

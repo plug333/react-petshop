@@ -6,12 +6,8 @@ import { API_URL } from '../../../../../contants';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { IAnimal } from '../../../../../model/animal';
+import { TAnimalState } from '../../../../../model/animal-state';
 
-type TAnimalState = {
-    error: boolean;
-    loading: boolean;
-    animal: IAnimal | null;
-}
 
 export const AnimalForm = () => {
     const navigate = useNavigate();

@@ -5,12 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../../../contants";
 import { DeleteButton } from "../../../button/delete-button";
-
-type TAnimalState = {
-    loading: boolean;
-    error: boolean;
-    animal: IAnimal | null;
-}
+import { TAnimalState } from "../../../../../model/animal-state";
 
 export const AnimalDetail = () => {
     const navigate = useNavigate();
