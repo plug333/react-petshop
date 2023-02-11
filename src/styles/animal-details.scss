@@ -1,6 +1,23 @@
 .animal-detail {
     padding: 1rem;
 
+    .row-detail {
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+        border: solid;
+        border-color: black;
+        margin-bottom: 1rem;
+        justify-content: center;
+        max-width: 600px;
+        background-color: #f4f4f4;
+    }
+
+    .row-button {
+        display: flex;
+        flex-direction: row;
+    }
+
     img {
         max-width: 300px;
     }
