@@ -12,6 +12,8 @@ import { TAnimalState } from '../../../../../model/animal-state';
 export const AnimalForm = () => {
     const navigate = useNavigate();
 
+    const now = dayjs().format('YYYY-MM-DD');
+
     const params = useParams();
     const _id = params._id;
 
@@ -56,10 +58,6 @@ export const AnimalForm = () => {
         }
     }
 
-    useEffect(() => {
-        fetchAnimal();
-    }, []);
-
     const onSubmit = async (data: IAnimal) => {
         setAnimalState({
             ...animalState,
@@ -83,13 +81,22 @@ export const AnimalForm = () => {
         }
     }
 
-    const watchImage = watch('imgUrl');
+    useEffect(() => {
+        if (!_id) {
+            reset(defaultAnimal);
+        }
+    }, [_id]);
 
-    const now = dayjs().format('YYYY-MM-DD');
+    useEffect(() => {
+        fetchAnimal();
+    }, []);
+
+    const watchImage = watch('imgUrl');
 
     return (
         <div className='animal-form'>
-            <h1>Add new Animal</h1>
+            {_id && <><h1>Edit Animal</h1></>}
+            {!_id && <><h1>Add new Animal</h1></>}
 
             <form>
                 <div className='row'>
@@ -100,33 +107,34 @@ export const AnimalForm = () => {
                             required: { value: true, message: 'Field Required' },
                         })}
                         placeholder='Name'
-                        value={animalState.animal?.name}
                     />
                     {errors.name && errors.name.message}
                 </div>
 
                 <div className='row'>
                     <label htmlFor='type'>Insert type:  </label>
-                    <input
-                        type='radio'
-                        id='DOG'
-                        className='type'
-                        value='DOG'
-                        {...register('type', {
-                            required: { value: true, message: 'Field Required' }
-                        })}
-                    />
-                    <label htmlFor='DOG'>DOG</label>
-                    <input
-                        type='radio'
-                        id='CAT'
-                        className='type'
-                        value='CAT'
-                        {...register('type', {
-                            required: { value: true, message: 'Field Required' }
-                        })}
-                    />
-                    <label htmlFor='CAT'>CAT</label>
+                    <div className='checkbox-row'>
+                        <input
+                            type='radio'
+                            id='DOG'
+                            className='type'
+                            value='DOG'
+                            {...register('type', {
+                                required: { value: true, message: 'Field Required' }
+                            })}
+                        />
+                        <label htmlFor='DOG'>DOG</label>
+                        <input
+                            type='radio'
+                            id='CAT'
+                            className='type'
+                            value='CAT'
+                            {...register('type', {
+                                required: { value: true, message: 'Field Required' }
+                            })}
+                        />
+                        <label htmlFor='CAT'>CAT</label>
+                    </div>
                     {errors.type && errors.type.message}
                 </div>
 
@@ -138,7 +146,6 @@ export const AnimalForm = () => {
                             required: { value: true, message: 'Field Required' },
                         })}
                         placeholder='Breed'
-                        value={animalState.animal?.breed}
                     />
                     {errors.breed && errors.breed.message}
                 </div>
@@ -152,7 +159,6 @@ export const AnimalForm = () => {
                         {...register('birthDate', {
                             required: { value: true, message: 'Field Required' },
                         })}
-                        value={animalState.animal?.birthDate}
                     />
                     {errors.birthDate && errors.birthDate.message}
                 </div>
@@ -165,7 +171,6 @@ export const AnimalForm = () => {
                             required: { value: true, message: 'Field Required' },
                         })}
                         placeholder='Image'
-                        value={animalState.animal?.imgUrl}
                     />
                     {errors.imgUrl && errors.imgUrl.message}
                 </div>
@@ -179,7 +184,6 @@ export const AnimalForm = () => {
                             minLength: { value: 9, message: 'Min 10 char allowed'}
                         })}
                         placeholder='Description'
-                        value={animalState.animal?.description}
                     />
                     {errors.description && errors.description.message}
                 </div>
@@ -201,7 +205,19 @@ export const AnimalForm = () => {
                     )}
                 </div>
 
-                {!animalState.loading && <><button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button></>}
+                <div className='row'>
+                    {!animalState.loading && <>
+                        <div className='row-button'>
+                            <button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button>
+                            {_id && <>
+                                <button onClick={() => {
+                                    
+                                    navigate(`/animal/${_id}`)
+                                }}>Back</button>
+                            </>}
+                        </div>
+                    </>}
+                </div>
                 {animalState.error && "Error"}
             </form>
         </div>
