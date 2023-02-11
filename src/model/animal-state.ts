@@ -15,4 +15,5 @@ export type TAnimalsState = {
 export type TAnimalDeleteState = {
     deleting: boolean;
     error: boolean;
+    confirmButton: boolean;
 }
