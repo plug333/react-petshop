@@ -66,11 +66,13 @@ export const AnimalForm = () => {
 
         try {
             const res = !data._id ? await axios.post(`${API_URL}/animal`, data) : await axios.put(`${API_URL}/animal/${_id}`, data);
+            const message = !data._id ? 'Pet saved successfully' : 'Pet updated successfully';
             setAnimalState({
                 ...animalState,
                 loading: false,
             });
             const id = res.data._id;
+            alert(message);
             navigate(`/animal/${id}`);
         } catch (e) {
             setAnimalState({
@@ -210,10 +212,7 @@ export const AnimalForm = () => {
                         <div className='row-button'>
                             <button disabled={!isValid} onClick={handleSubmit(onSubmit)}>Send</button>
                             {_id && <>
-                                <button onClick={() => {
-                                    
-                                    navigate(`/animal/${_id}`)
-                                }}>Back</button>
+                                <button onClick={() => navigate(`/animal/${_id}`)}>Back</button>
                             </>}
                         </div>
                     </>}
