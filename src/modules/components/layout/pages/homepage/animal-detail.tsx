@@ -51,7 +51,9 @@ export const AnimalDetail = () => {
             {animalState.loading && 'Loading...'}
             {animalState.error && 'Error'}
             {animalState.animal && <>
-                <h2>ID: {animalState.animal?._id}</h2>
+                <label className="row-detail">
+                    <h2>ID: {animalState.animal?._id}</h2>
+                </label>
 
                 <label className="row-detail">
                     <img src={animalState.animal?.imgUrl} alt='animal photo' />
