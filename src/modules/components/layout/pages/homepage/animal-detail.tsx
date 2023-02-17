@@ -93,7 +93,7 @@ export const AnimalDetail = () => {
 
                 <div className="row-detail">
                     <button disabled={animalState.loading} onClick={() => navigate(`/animal/${animalState.animal?._id}/edit`)}>Edit</button>
-                    <DeleteButton />
+                    <DeleteButton animal={animalState.animal} />
             </div>
             </>}
         </div>
