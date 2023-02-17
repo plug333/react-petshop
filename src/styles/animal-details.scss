@@ -1,5 +1,8 @@
 .animal-detail {
-    padding: 1rem;
+    padding-top: 2rem;
+    padding-left: 14rem;
+    display: flex;
+    flex-direction: column;
 
     .row-detail {
         padding: 1rem;
@@ -7,6 +10,7 @@
         flex-direction: row;
         border: solid;
         border-color: black;
+        border-radius: 1rem;
         margin-bottom: 1rem;
         justify-content: center;
         max-width: 600px;
