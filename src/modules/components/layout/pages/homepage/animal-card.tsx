@@ -25,7 +25,7 @@ export const AnimalCard = (props: Props) => {
                 <h2>Type: </h2><p>{animal.type}</p>
                 <h2>Breed: </h2><p>{animal.breed}</p>
                 <h2>Age: </h2><p>{calcAge()}</p>
-                <h2>{"Pedigree: " + animal.pedigree}</h2>
+                <h2>Pedigree: </h2> <p>{animal.pedigree ? 'true' : 'false'}</p>
                 <button onClick={() => navigate(`/animal/${animal._id}`)}>Details</button>
                 <DeleteButton />
             </div>
