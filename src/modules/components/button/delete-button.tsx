@@ -1,30 +1,41 @@
 import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../../contants";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TAnimalDeleteState } from "../../../model/animal-state";
+import { IAnimal } from "../../../model/animal";
 
-export const DeleteButton = () => {
+type Props = {
+    animal: IAnimal
+}
+
+export const DeleteButton = (props: Props) => {
+    const { animal } = props;
+    
     const navigate = useNavigate();
 
-    const params = useParams();
-    const id = params._id;
-    
     const [animalDeleteState, setAnimalDeleteState] = useState<TAnimalDeleteState>({
         deleting: false,
         error: false,
         confirmButton: false
     });
+
+    const refresh = () => window.location.reload();
     
     const deleteAnimal = async () => {     
+        setAnimalDeleteState({
+            ...animalDeleteState,
+            deleting: true,
+        });
         try {
-            await axios.delete(`${API_URL}/animal/${id}`);
+            await axios.delete(`${API_URL}/animal/${animal._id}`);
             setAnimalDeleteState({
                 ...animalDeleteState,
-                deleting: true,
+                deleting: false,
             });
             alert('Pet successfully deleted!');
             navigate('/');
+            refresh();
         } catch (e) {
             setAnimalDeleteState({
                 ...animalDeleteState,
